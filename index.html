@@ -1,0 +1,86 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ZEPETO FOLLOW</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background-color: #111;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      background: #222;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(255,255,255,0.1);
+      text-align: center;
+    }
+    h1 {
+      margin-bottom: 30px;
+      color: #fff;
+    }
+    input, button {
+      padding: 10px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 10px;
+      width: 100%;
+      font-size: 16px;
+    }
+    input {
+      background: #333;
+      color: #fff;
+    }
+    button {
+      background: #fff;
+      color: #111;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #ccc;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>ZEPETO FOLLOW</h1>
+    <form id="followForm">
+      <input type="text" id="zepetoId" placeholder="ZEPETO 아이디를 입력하세요" required />
+      <input type="number" id="followCount" placeholder="원하는 팔로우 수" required />
+      <button type="submit">팔로워 늘리기</button>
+    </form>
+    <p id="result"></p>
+  </div>
+  <script>
+    const form = document.getElementById('followForm');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const id = document.getElementById('zepetoId').value;
+      const count = document.getElementById('followCount').value;
+      const result = document.getElementById('result');
+      result.textContent = '처리 중...';
+
+      try {
+        const res = await fetch('/api/follow', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ id, count })
+        });
+        const data = await res.json();
+        result.textContent = data.message || '완료되었습니다!';
+      } catch (err) {
+        result.textContent = '에러 발생: ' + err.message;
+      }
+    });
+  </script>
+</body>
+</html>
