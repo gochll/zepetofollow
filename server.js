@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
+const path = require('path');
 
 async function increaseFollowers(id, count) {
     console.log(`🚀 ZEPETO 팔로우 증가 시뮬레이션: ID=${id}, count=${count}`);
@@ -9,7 +10,12 @@ async function increaseFollowers(id, count) {
 
 app.use(cors());
 app.use(express.json());
-app.use(express.static('frontend')); // 반드시 있어야 함
+app.use(express.static('frontend')); // frontend 폴더 내 정적 파일 제공
+
+// ✅ 루트 경로로 접속하면 index.html 보여주기
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'frontend', 'index.html'));
+});
 
 app.post('/api/follow', async (req, res) => {
     const { id, count } = req.body;
