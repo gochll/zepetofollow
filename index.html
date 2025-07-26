@@ -24,7 +24,7 @@
             });
 
             const data = await response.json();
-            document.getElementById('result').innerText = JSON.stringify(data);
+            document.getElementById('result').innerText = data.result?.message || '요청 실패';
         });
     </script>
 </body>
